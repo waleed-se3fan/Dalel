@@ -1,6 +1,6 @@
 import 'package:dalel/core/widgets/custom_btn.dart';
+import 'package:dalel/features/auth/presentation/views/signup.dart';
 import 'package:dalel/features/on_boarding/data/models/on_boarding_model.dart';
-import 'package:dalel/features/on_boarding/presentation/views/functions/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 class GetButtons extends StatelessWidget {
@@ -15,7 +15,11 @@ class GetButtons extends StatelessWidget {
         children: [
           CustomBtn(
             text: 'createAccount',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (c) {
+                return const SignupScreen();
+              }));
+            },
           ),
           const SizedBox(height: 16),
           GestureDetector(
