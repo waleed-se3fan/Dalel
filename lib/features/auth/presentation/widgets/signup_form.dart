@@ -7,8 +7,8 @@ import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MyForm extends StatelessWidget {
-  const MyForm({super.key});
+class SignupForm extends StatelessWidget {
+  const SignupForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class MyForm extends StatelessWidget {
                             onPressed: () {
                               if (AuthBloc.isCheck) {
                                 if (AuthBloc.formkey.currentState!.validate()) {
-                                  context.read<AuthBloc>().add(LoginEvent(
+                                  context.read<AuthBloc>().add(SignupEvent(
                                       AuthBloc.emailController.text,
                                       AuthBloc.passwordController.text));
                                 }

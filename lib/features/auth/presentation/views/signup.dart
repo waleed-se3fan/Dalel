@@ -1,5 +1,6 @@
+import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/auth/presentation/widgets/already_have_account.dart';
-import 'package:dalel/features/auth/presentation/widgets/form.dart';
+import 'package:dalel/features/auth/presentation/widgets/signup_form.dart';
 import 'package:dalel/features/auth/presentation/widgets/welcometext.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,15 @@ class SignupScreen extends StatelessWidget {
           SizedBox(
             height: height * .05,
           ),
-          const MyForm(),
+          const SignupForm(),
           AlreadyHaveAccount(
               text1: 'Already have an account ? ',
               text2: 'Sign In',
-              onTap: () {})
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (c) {
+                  return SignInScreen();
+                }));
+              })
         ],
       ),
     ));

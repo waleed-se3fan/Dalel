@@ -25,3 +25,15 @@ class UpdateIsOpscureState extends AuthStates {
   bool value;
   UpdateIsOpscureState(this.value);
 }
+
+class LoginLoading extends AuthStates {}
+
+class LoginSuccess extends AuthStates {
+  final User user;
+  LoginSuccess(this.user);
+}
+
+class LoginFailure extends AuthStates {
+  final String error;
+  LoginFailure(this.error);
+}

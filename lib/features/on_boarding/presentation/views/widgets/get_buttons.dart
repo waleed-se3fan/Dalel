@@ -1,4 +1,5 @@
 import 'package:dalel/core/widgets/custom_btn.dart';
+import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/auth/presentation/views/signup.dart';
 import 'package:dalel/features/on_boarding/data/models/on_boarding_model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,11 @@ class GetButtons extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (c) {
+                return SignInScreen();
+              }));
+            },
             child: const Text(
               'loginNow',
             ),

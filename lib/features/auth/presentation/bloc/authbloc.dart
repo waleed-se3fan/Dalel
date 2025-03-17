@@ -10,8 +10,12 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   AuthBloc() : super(AuthInitial()) {
     on<AuthEvents>((event, emit) {});
 
-    on<LoginEvent>((event, emit) {
+    on<SignupEvent>((event, emit) {
       signup(event.email, event.password);
+    });
+
+    on<LoginEvent>((event, emit) {
+      login(event.email, event.password);
     });
 
     on<UpdateCheckBoxEvent>((event, emit) {
@@ -23,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     });
   }
   static final formkey = GlobalKey<FormState>();
+  static final loginformkey = GlobalKey<FormState>();
 
   static final TextEditingController firstNameController =
       TextEditingController();
@@ -45,6 +50,20 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(SignupSuccess(userCredential.user!));
     } catch (e) {
       emit(SignupFailure(e.toString()));
+    }
+  }
+
+  login(String email, String password) async {
+    try {
+      emit(LoginLoading());
+      final userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      emit(LoginSuccess(userCredential.user!));
+    } catch (e) {
+      emit(LoginFailure(e.toString()));
     }
   }
 
