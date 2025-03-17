@@ -1,3 +1,4 @@
+import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,11 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
+                await FirebaseAuth.instance.signOut().then((value) =>
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (c) {
+                      return SignInScreen();
+                    })));
               },
               icon: Icon(Icons.logout))
         ],

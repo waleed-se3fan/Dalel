@@ -26,7 +26,7 @@ class GetButtons extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (c) {
-                return SignInScreen();
+                return const SignInScreen();
               }));
             },
             child: const Text(

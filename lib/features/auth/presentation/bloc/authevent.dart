@@ -21,3 +21,10 @@ class UpdateOpscureEvent extends AuthEvents {
   bool value;
   UpdateOpscureEvent(this.value);
 }
+
+class StoreUserEvent extends AuthEvents {}
+
+class SendResetPasswordLink extends AuthEvents {
+  final String email;
+  SendResetPasswordLink(this.email);
+}

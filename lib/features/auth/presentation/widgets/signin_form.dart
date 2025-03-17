@@ -2,6 +2,7 @@ import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/features/auth/presentation/bloc/authbloc.dart';
 import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
+import 'package:dalel/features/auth/presentation/views/forget_password.dart';
 import 'package:dalel/features/auth/presentation/views/signup.dart';
 import 'package:dalel/features/auth/presentation/widgets/already_have_account.dart';
 import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
@@ -73,7 +74,12 @@ class SigninForm extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (c) {
+                            return ForgetPasswordScreen();
+                          }));
+                        },
                         child: const Text(
                           'Forget Password?',
                           style: TextStyle(color: Colors.black),
@@ -105,6 +111,7 @@ class SigninForm extends StatelessWidget {
                                       AuthBloc.emailController.text,
                                       AuthBloc.passwordController.text));
                                 }
+                                AuthBloc.loginformkey.currentState!.dispose();
                               },
                             ),
                     ),

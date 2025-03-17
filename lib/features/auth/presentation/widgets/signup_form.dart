@@ -4,6 +4,7 @@ import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
 import 'package:dalel/features/auth/presentation/widgets/agreement.dart';
 import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
+import 'package:dalel/features/home/presentation/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,7 @@ class SignupForm extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Succes')));
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) {
-              return Container();
+              return HomeScreen();
             }));
           } else if (state is SignupFailure) {
             ScaffoldMessenger.of(context)
@@ -38,7 +39,7 @@ class SignupForm extends StatelessWidget {
                 children: [
                   CustomTextFeild(
                     labelText: 'First Name',
-                    controller: TextEditingController(),
+                    controller: AuthBloc.firstNameController,
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return 'Please enter your first name';

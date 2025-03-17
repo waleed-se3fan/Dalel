@@ -37,3 +37,18 @@ class LoginFailure extends AuthStates {
   final String error;
   LoginFailure(this.error);
 }
+
+class LoadingStoreUser extends AuthStates {}
+
+class SuccesStoreUser extends AuthStates {}
+
+class FailStoreUser extends AuthStates {}
+
+class LoadingResetPassword extends AuthStates {}
+
+class SuccessResetPassword extends AuthStates {}
+
+class FailResetPassword extends AuthStates {
+  final String errorMessage;
+  FailResetPassword(this.errorMessage);
+}

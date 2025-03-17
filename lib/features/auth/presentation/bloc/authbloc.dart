@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,9 +26,13 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     on<UpdateOpscureEvent>((event, emit) {
       updateIsOpsecure(event.value);
     });
+    on<SendResetPasswordLink>((event, emit) {
+      sendResetPasswordLink(event.email);
+    });
   }
   static final formkey = GlobalKey<FormState>();
   static final loginformkey = GlobalKey<FormState>();
+  static final forgetPasswordformkey = GlobalKey<FormState>();
 
   static final TextEditingController firstNameController =
       TextEditingController();
@@ -47,6 +52,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         email: email,
         password: password,
       );
+      storeUser(
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          email: emailController.text);
       emit(SignupSuccess(userCredential.user!));
     } catch (e) {
       emit(SignupFailure(e.toString()));
@@ -75,5 +84,36 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   updateIsOpsecure(value) {
     isobscure = value;
     emit(UpdateIsOpscureState(isobscure));
+  }
+
+  storeUser(
+      {required String firstName,
+      required String lastName,
+      required String email}) {
+    emit(LoadingStoreUser());
+    try {
+      CollectionReference user = FirebaseFirestore.instance.collection('user');
+      user.add({
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+      });
+      emit(SuccesStoreUser());
+    } catch (e) {
+      emit(FailStoreUser());
+    }
+  }
+
+  sendResetPasswordLink(String email) async {
+    print('Loading');
+    emit(LoadingResetPassword());
+    try {
+      print('Success');
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      emit(SuccessResetPassword());
+    } catch (e) {
+      print('Fail');
+      emit(FailResetPassword(e.toString()));
+    }
   }
 }
