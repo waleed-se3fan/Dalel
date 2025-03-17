@@ -48,6 +48,7 @@ class SigninForm extends StatelessWidget {
                         if (val == null || val.isEmpty) {
                           return 'Please enter your email';
                         }
+                        return null;
                       },
                     ),
                     SizedBox(
@@ -60,6 +61,7 @@ class SigninForm extends StatelessWidget {
                         if (val == null || val.isEmpty) {
                           return 'Please enter your password';
                         }
+                        return null;
                       },
                       icon: AuthBloc.isobscure
                           ? Icons.visibility_off_outlined
@@ -77,7 +79,7 @@ class SigninForm extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (c) {
-                            return ForgetPasswordScreen();
+                            return const ForgetPasswordScreen();
                           }));
                         },
                         child: const Text(
@@ -111,7 +113,6 @@ class SigninForm extends StatelessWidget {
                                       AuthBloc.emailController.text,
                                       AuthBloc.passwordController.text));
                                 }
-                                AuthBloc.loginformkey.currentState!.dispose();
                               },
                             ),
                     ),

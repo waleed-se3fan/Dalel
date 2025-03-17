@@ -22,15 +22,20 @@ class GetButtons extends StatelessWidget {
               }));
             },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (c) {
                 return const SignInScreen();
               }));
             },
-            child: const Text(
-              'loginNow',
+            child: const SizedBox(
+              width: double.infinity,
+              child: Text(
+                'Login Now',
+                textAlign: TextAlign.center,
+                style: TextStyle(decoration: TextDecoration.underline),
+              ),
             ),
           ),
         ],

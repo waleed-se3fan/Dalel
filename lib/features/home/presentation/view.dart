@@ -15,10 +15,10 @@ class HomeScreen extends StatelessWidget {
                 await FirebaseAuth.instance.signOut().then((value) =>
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (c) {
-                      return SignInScreen();
+                      return const SignInScreen();
                     })));
               },
-              icon: Icon(Icons.logout))
+              icon: const Icon(Icons.logout))
         ],
       ),
       body: const Center(

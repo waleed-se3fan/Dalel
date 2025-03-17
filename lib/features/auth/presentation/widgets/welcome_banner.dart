@@ -18,7 +18,13 @@ class WelcomeBanner extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text('Dalel'),
+              const Text(
+                'Dalel',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    fontSize: 32),
+              ),
               const SizedBox(
                 height: 18,
               ),

@@ -23,7 +23,7 @@ class SignupForm extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Succes')));
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) {
-              return HomeScreen();
+              return const HomeScreen();
             }));
           } else if (state is SignupFailure) {
             ScaffoldMessenger.of(context)
@@ -44,6 +44,7 @@ class SignupForm extends StatelessWidget {
                       if (val == null || val.isEmpty) {
                         return 'Please enter your first name';
                       }
+                      return null;
                     },
                   ),
                   SizedBox(
@@ -56,6 +57,7 @@ class SignupForm extends StatelessWidget {
                       if (val == null || val.isEmpty) {
                         return 'Please enter your last name';
                       }
+                      return null;
                     },
                   ),
                   SizedBox(
@@ -68,6 +70,7 @@ class SignupForm extends StatelessWidget {
                       if (val == null || val.isEmpty) {
                         return 'Please enter your email';
                       }
+                      return null;
                     },
                   ),
                   SizedBox(
@@ -80,6 +83,7 @@ class SignupForm extends StatelessWidget {
                       if (val == null || val.isEmpty) {
                         return 'Please enter your password';
                       }
+                      return null;
                     },
                     icon: AuthBloc.isobscure
                         ? Icons.visibility_off_outlined

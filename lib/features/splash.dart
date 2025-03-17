@@ -13,6 +13,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    super.initState();
     Future.delayed(
       const Duration(seconds: 2),
       () {
@@ -31,8 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Dalel'),
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'Dalel',
+          style: TextStyle(
+              color: Colors.brown.shade800,
+              fontWeight: FontWeight.w400,
+              fontSize: 64),
+        ),
+      ),
     );
   }
 }

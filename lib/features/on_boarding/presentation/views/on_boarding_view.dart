@@ -23,13 +23,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             physics: const BouncingScrollPhysics(),
             children: [
               const SizedBox(height: 40),
-              CustomNavBar(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (c) {
-                    return Container();
-                  }));
-                },
-              ),
+              const CustomNavBar(),
               OnBoardingWidgetBody(
                 onPageChanged: (index) {
                   setState(() {

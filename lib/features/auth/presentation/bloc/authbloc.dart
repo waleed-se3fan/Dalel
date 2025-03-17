@@ -105,14 +105,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   }
 
   sendResetPasswordLink(String email) async {
-    print('Loading');
     emit(LoadingResetPassword());
     try {
-      print('Success');
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       emit(SuccessResetPassword());
     } catch (e) {
-      print('Fail');
       emit(FailResetPassword(e.toString()));
     }
   }
