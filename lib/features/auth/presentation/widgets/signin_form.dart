@@ -6,7 +6,7 @@ import 'package:dalel/features/auth/presentation/views/forget_password.dart';
 import 'package:dalel/features/auth/presentation/views/signup.dart';
 import 'package:dalel/features/auth/presentation/widgets/already_have_account.dart';
 import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
-import 'package:dalel/features/home/presentation/view.dart';
+import 'package:dalel/features/home/presentation/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

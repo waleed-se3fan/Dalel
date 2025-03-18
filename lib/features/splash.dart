@@ -1,4 +1,4 @@
-import 'package:dalel/features/home/presentation/view.dart';
+import 'package:dalel/features/home/presentation/view/view.dart';
 import 'package:dalel/features/on_boarding/presentation/views/on_boarding_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -4,7 +4,7 @@ import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
 import 'package:dalel/features/auth/presentation/widgets/agreement.dart';
 import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
-import 'package:dalel/features/home/presentation/view.dart';
+import 'package:dalel/features/home/presentation/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
