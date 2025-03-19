@@ -1,38 +1,72 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/core/widgets/custom_header.dart';
+import 'package:dalel/features/home/data/historicalPeriodsModel.dart';
+import 'package:dalel/features/home/data/warsModel.dart';
+import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
+import 'package:dalel/features/home/presentation/view/home_view.dart';
 import 'package:dalel/features/home/presentation/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HistoricalPeriodScreen extends StatelessWidget {
-  const HistoricalPeriodScreen({super.key});
+  final List<HistoricalPeriodsModel> data;
+  final int index;
+  const HistoricalPeriodScreen(
+      {super.key, required this.data, required this.index});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 28, horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 12),
+        child: ListView(
           children: [
-            CustomAppbar(),
+            const SizedBox(
+              height: 12,
+            ),
+            const CustomAppbar(),
+            const SizedBox(
+              height: 12,
+            ),
             PeriodDetailsSection(
-                periodName: 'Acncient',
-                description:
-                    'PeriodDetailsSectionPeriodDetailsSectionPeriodDetailsSectionPeriodDetailsSectionPeriodDetailsSectionPeriodDetailsSection',
-                imageUrl:
-                    'https://www.warhistoryonline.com/wp-content/uploads/sites/64/2016/07/00-battlephosom.jpg'),
-            CustomHeaderText(text: 'Ancient Egypt Wars'),
-            PeriodWars(),
-            CustomHeaderText(text: 'Recommendations'),
+                periodName: data[index].name,
+                description: data[index].summary,
+                imageUrl: data[index].image),
+            CustomHeaderText(text: '${data[index].name} Wars'),
+            const SizedBox(
+              height: 12,
+            ),
+            PeriodWars(war: data[index].wars),
+            const SizedBox(
+              height: 12,
+            ),
+            const CustomHeaderText(text: 'Recommendations'),
+            const SizedBox(
+              height: 12,
+            ),
+            BlocProvider(
+              create: (context) => HomeBloc()
+                ..add(GetHistoricalPeriods('Historical Characters')),
+              child: BlocBuilder<HomeBloc, HomeState>(
+                builder: (context, state) {
+                  return state is SuccessGetHistoricalPeriods
+                      ? HistoricalCharacters(model: state.data)
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+/*this all widgets used in above screen*/
 
 class PeriodDetailsSection extends StatelessWidget {
   const PeriodDetailsSection(
@@ -63,20 +97,28 @@ class PeriodDetailsSection extends StatelessWidget {
                 Positioned(
                     top: -24, child: SvgPicture.asset(Assets.imagesDetails2)),
                 SizedBox(
-                    width: 196,
+                    width: MediaQuery.of(context).size.width / 2,
                     height: 220,
                     child: Text(
                       description,
-                      maxLines: 10,
+                      maxLines: 13,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                     )),
               ],
             ),
             const SizedBox(width: 16),
             SizedBox(
-              width: 120,
-              height: 203,
-              child: Image.network(imageUrl, fit: BoxFit.fill),
+              width: MediaQuery.of(context).size.width / 2.6,
+              height: 240,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                        image: CachedNetworkImageProvider(imageUrl),
+                        fit: BoxFit.fill)),
+              ),
             )
           ],
         )
@@ -86,107 +128,84 @@ class PeriodDetailsSection extends StatelessWidget {
 }
 
 class PeriodWars extends StatelessWidget {
-  const PeriodWars({super.key});
+  final List<WarsModel> war;
+
+  const PeriodWars({
+    super.key,
+    required this.war,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (c) {
-              return const PeriodDetailsSection(
-                  periodName: 'Egypr',
-                  description: 'description',
-                  imageUrl:
-                      'https://www.warhistoryonline.com/wp-content/uploads/sites/64/2016/07/00-battlephosom.jpg');
-            }));
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(.5),
-                      blurRadius: 10,
-                      offset: const Offset(0, 7)),
-                ],
-                borderRadius: BorderRadius.circular(5)),
-            height: 96,
-            width: 164,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(
-                  width: 16,
-                ),
-                const SizedBox(
-                    height: 62,
-                    width: 48,
-                    child: Text(
-                      'Ancient Egypt',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: AppColors.appColor),
-                    )),
-                Container(
-                  height: 64,
-                  width: 47,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(Assets.imagesFrame))),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(.5),
-                    blurRadius: 10,
-                    offset: const Offset(0, 7)),
-              ],
-              borderRadius: BorderRadius.circular(5)),
-          height: 96,
-          width: 164,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (c, i) {
+          return Row(
             children: [
-              const SizedBox(
-                width: 16,
+              InkWell(
+                onTap: () {
+                  // Navigator.push(context, MaterialPageRoute(builder: (c) {
+                  //   return HistoricalPeriodScreen(
+                  //     data: state is SuccessGetHistoricalPeriods
+                  //         ? state.data
+                  //         : [],
+                  //     index: i,
+                  //   );
+                  // }));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(.5),
+                            blurRadius: 10,
+                            offset: const Offset(0, 7)),
+                      ],
+                      borderRadius: BorderRadius.circular(5)),
+                  height: 100,
+                  width: 164,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                          height: 62,
+                          width: 75,
+                          child: Text(
+                            war[i].name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 16, color: AppColors.appColor),
+                          )),
+                      Container(
+                          height: 70,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image:
+                                    CachedNetworkImageProvider(war[i].image)),
+                          )),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(
-                  height: 62,
-                  width: 48,
-                  child: Text(
-                    'Ancient Egypt',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: AppColors.appColor),
-                  )),
-              Container(
-                height: 64,
-                width: 47,
-                decoration: const BoxDecoration(
-                    image:
-                        DecorationImage(image: AssetImage(Assets.imagesFrame))),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
+                width: 12,
+              )
             ],
-          ),
-        ),
-      ],
+          );
+        },
+        itemCount: 2,
+      ),
     );
   }
 }

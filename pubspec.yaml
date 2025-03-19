@@ -41,7 +41,8 @@ dependencies:
   flutter_bloc: 
   firebase_auth: 
   flutter_svg: 
-  cloud_firestore: 
+  cloud_firestore:
+  cached_network_image:  
   
 dev_dependencies:
   flutter_test:
