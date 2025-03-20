@@ -13,6 +13,9 @@ class CacheHelper {
     if (value is int) return await _preferences!.setInt(key, value);
     if (value is bool) return await _preferences!.setBool(key, value);
     if (value is double) return await _preferences!.setDouble(key, value);
+    if (value is List<String>) {
+      return await _preferences!.setStringList(key, value);
+    }
     return false;
   }
 

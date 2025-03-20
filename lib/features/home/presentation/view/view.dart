@@ -2,6 +2,8 @@ import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/home/presentation/view/home_view.dart';
+import 'package:dalel/features/profile/presentation/views/profile.dart';
+import 'package:dalel/features/search/presentation/view/search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,9 +20,11 @@ class _HomeNavBarState extends State<HomeScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeView(),
-    Text('Shopping Cart Page'),
-    Text('Search Page'),
-    Text('Profile Page'),
+    Center(
+      child: Text('Shopping Cart Page'),
+    ),
+    SearchScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,21 +36,10 @@ class _HomeNavBarState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: [
-      //     IconButton(
-      //         onPressed: () async {
-      //           await FirebaseAuth.instance.signOut().then((value) =>
-      //               Navigator.pushReplacement(context,
-      //                   MaterialPageRoute(builder: (c) {
-      //                 return const SignInScreen();
-      //               })));
-      //         },
-      //         icon: const Icon(Icons.logout))
-      //   ],
-      // ),
-
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 0,
         type: BottomNavigationBarType.fixed,

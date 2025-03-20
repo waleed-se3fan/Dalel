@@ -25,4 +25,5 @@ class Assets {
   static const String imagesSucccesOrder = "assets/images/succcesOrder.png";
   static const String imagesVector1 = "assets/images/vector1.svg";
   static const String imagesVector2 = "assets/images/vector2.svg";
+  static const String profile = 'assets/images/profile.png';
 }

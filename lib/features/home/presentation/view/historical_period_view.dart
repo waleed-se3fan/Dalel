@@ -6,6 +6,7 @@ import 'package:dalel/features/home/data/historicalPeriodsModel.dart';
 import 'package:dalel/features/home/data/warsModel.dart';
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dalel/features/home/presentation/view/home_view.dart';
+import 'package:dalel/features/home/presentation/widgets/detailed_custom_appbar.dart';
 import 'package:dalel/features/home/presentation/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,13 +22,13 @@ class HistoricalPeriodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         child: ListView(
           children: [
             const SizedBox(
               height: 12,
             ),
-            const CustomAppbar(),
+            const CustomDetailedAppbar(),
             const SizedBox(
               height: 12,
             ),
@@ -204,7 +205,7 @@ class PeriodWars extends StatelessWidget {
             ],
           );
         },
-        itemCount: 2,
+        itemCount: war.length,
       ),
     );
   }

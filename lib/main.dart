@@ -1,4 +1,5 @@
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
+import 'package:dalel/features/search/presentation/bloc/search_bloc.dart';
 import 'package:dalel/features/splash.dart';
 import 'package:dalel/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeBloc(),
         ),
+        BlocProvider(create: (context) => SearchBloc()..add(GetSavedData()))
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
