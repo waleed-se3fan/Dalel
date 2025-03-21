@@ -3,11 +3,11 @@ class HistoricalBoxModel {
   final String creator;
   final String image;
   final String publishDate;
-  final String summery;
+  final String summary;
   final int pages;
   final double rating;
   HistoricalBoxModel(this.name, this.creator, this.image, this.publishDate,
-      this.summery, this.pages, this.rating);
+      this.summary, this.pages, this.rating);
 
   factory HistoricalBoxModel.fromFireStore(json) {
     return HistoricalBoxModel(
@@ -15,7 +15,7 @@ class HistoricalBoxModel {
       json['creator'] ?? '',
       json['image'] ?? '',
       json['publication_date'] ?? '',
-      json['summery'] ?? '',
+      json['summary'] ?? '',
       json['pages'] ?? 0,
       json['rating'] ?? 0,
     );

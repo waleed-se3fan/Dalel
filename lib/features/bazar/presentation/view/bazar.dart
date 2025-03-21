@@ -3,7 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/widgets/custom_appbar.dart';
 import 'package:dalel/core/widgets/custom_header.dart';
+import 'package:dalel/features/bazar/data/historical_books_model.dart';
+import 'package:dalel/features/bazar/data/historical_souviners_model.dart';
 import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
+import 'package:dalel/features/bazar/presentation/view/historical_book_details.dart';
+import 'package:dalel/features/bazar/presentation/view/historical_souvenirs_details.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,11 +17,11 @@ class BazarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Stack(
-        children: [
-          Column(
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(text: 'Bazar'),
@@ -55,7 +59,7 @@ class BazarScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: 180,
                       child: state is SuccessGetHistoricalBooks
-                          ? ProductCard(
+                          ? BooksProductCard(
                               data: state.data,
                             )
                           : const Center(
@@ -78,7 +82,7 @@ class BazarScreen extends StatelessWidget {
                       height: 180,
                       width: MediaQuery.of(context).size.width,
                       child: state is SuccessGetHistoricalSouviners
-                          ? ProductCard(
+                          ? SouvinersProductCard(
                               data: state.data,
                             )
                           : const Center(
@@ -88,24 +92,21 @@ class BazarScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 100,
-              )
             ],
           ),
-          Positioned(
-              bottom: 40,
-              right: 0,
-              child: CircleAvatar(
-                  backgroundColor: const Color(0xFFB18573),
-                  radius: 30,
-                  child: IconButton(
-                    onPressed: () async {},
-                    color: Colors.white,
-                    icon: const Icon(Icons.shopping_cart),
-                  )))
-        ],
-      ),
+        ),
+        Positioned(
+            bottom: 0,
+            right: 10,
+            child: CircleAvatar(
+                backgroundColor: const Color(0xFFB18573),
+                radius: 30,
+                child: IconButton(
+                  onPressed: () async {},
+                  color: Colors.white,
+                  icon: const Icon(Icons.shopping_cart),
+                )))
+      ],
     );
   }
 }
@@ -157,40 +158,83 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-class ProductCard extends StatelessWidget {
-  final List data;
+class BooksProductCard extends StatelessWidget {
+  final List<HistoricalBoxModel> data;
 
-  const ProductCard({super.key, required this.data});
+  const BooksProductCard({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomListView(
+      data: data,
+    );
+  }
+}
+
+class SouvinersProductCard extends StatelessWidget {
+  final List<HistoricalSouvinersModel> data;
+
+  const SouvinersProductCard({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomListView(
+      data: data,
+    );
+  }
+}
+
+class CustomListView extends StatelessWidget {
+  final List data;
+  const CustomListView({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 120,
-        margin: const EdgeInsets.only(right: 12),
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: SizedBox(
-          height: 133,
-          child: ListView.separated(
-            clipBehavior: Clip.none,
-            physics: const BouncingScrollPhysics(),
-            separatorBuilder: (context, index) {
-              return const SizedBox(width: 16);
-            },
-            scrollDirection: Axis.horizontal,
-            itemCount: data.length,
-            itemBuilder: (_, index) {
-              return Container(
+      margin: const EdgeInsets.only(right: 12),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: SizedBox(
+        height: 133,
+        child: ListView.separated(
+          clipBehavior: Clip.none,
+          physics: const BouncingScrollPhysics(),
+          separatorBuilder: (context, index) {
+            return const SizedBox(width: 16);
+          },
+          scrollDirection: Axis.horizontal,
+          itemCount: data.length,
+          itemBuilder: (_, index) {
+            return InkWell(
+              onTap: () {
+                data is List<HistoricalBoxModel>
+                    ? Navigator.push(context, MaterialPageRoute(builder: (c) {
+                        return BookDescriptionScreen(
+                          bookDetails: data,
+                          index: index,
+                        );
+                      }))
+                    : data is List<HistoricalSouvinersModel>
+                        ? Navigator.push(context,
+                            MaterialPageRoute(builder: (c) {
+                            return SouvenirDescriptionScreen(
+                              souvenirDetails: data,
+                              index: index,
+                            );
+                          }))
+                        : null;
+              },
+              child: Container(
                 width: 74,
                 height: 150,
                 decoration: BoxDecoration(
@@ -226,9 +270,11 @@ class ProductCard extends StatelessWidget {
                     )
                   ],
                 ),
-              );
-            },
-          ),
-        ));
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
