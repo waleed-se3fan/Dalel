@@ -23,7 +23,7 @@ class SignupForm extends StatelessWidget {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Succes')));
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (c) {
-              return const HomeScreen();
+              return HomeScreen();
             }));
           } else if (state is SignupFailure) {
             ScaffoldMessenger.of(context)

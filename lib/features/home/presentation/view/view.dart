@@ -1,6 +1,7 @@
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
+import 'package:dalel/features/bazar/presentation/view/bazar.dart';
 import 'package:dalel/features/home/presentation/view/home_view.dart';
 import 'package:dalel/features/profile/presentation/views/profile.dart';
 import 'package:dalel/features/search/presentation/view/search.dart';
@@ -8,23 +9,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+final GlobalKey<_HomeNavBarState> bottomNavBarKey = GlobalKey();
+
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({Key? key}) : super(key: bottomNavBarKey);
 
   @override
   _HomeNavBarState createState() => _HomeNavBarState();
 }
 
 class _HomeNavBarState extends State<HomeScreen> {
+  void changePage(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeView(),
-    Center(
-      child: Text('Shopping Cart Page'),
-    ),
-    SearchScreen(),
-    ProfileScreen(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const HomeView(),
+    const BazarScreen(),
+    const SearchScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

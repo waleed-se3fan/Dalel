@@ -1,3 +1,4 @@
+import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dalel/features/search/presentation/bloc/search_bloc.dart';
 import 'package:dalel/features/splash.dart';
@@ -23,7 +24,10 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => HomeBloc(),
         ),
-        BlocProvider(create: (context) => SearchBloc()..add(GetSavedData()))
+        BlocProvider(create: (context) => SearchBloc()..add(GetSavedData())),
+        BlocProvider(
+          create: (context) => BazarBloc(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -27,7 +27,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         var querySnapshot = await FirebaseFirestore.instance
             .collection('Historical Characters')
             .orderBy('name')
-            .startAt([name]).endAt([name + '\uf8ff']).get();
+            .startAt([name]).endAt(['$name\uf8ff']).get();
 
         List<HistoricalPeriodsModel> data = querySnapshot.docs
             .map((e) => HistoricalPeriodsModel.fromFireBase(e.data()))
@@ -41,16 +41,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
   }
 
-  List<String> lastSearched = [
-    'waleed',
-    'mohammed',
-  ];
+  List<String> lastSearched = [];
 
   SaveData(String word) async {
     CacheHelper.init();
     lastSearched.add(word);
-    await CacheHelper.saveData(key: 'keeey', value: lastSearched)
-        .then((value) => print(value.toString()));
+    await CacheHelper.saveData(key: 'waled', value: lastSearched);
     CacheHelper.init();
   }
 
@@ -59,9 +55,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     try {
       CacheHelper.init();
 
-      SharedPreferences _preferences = await SharedPreferences.getInstance();
-      lastSearched = _preferences.getStringList('keeey')!;
-      emit(SuccessGetSavedData(lastSearched!));
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      lastSearched = preferences.getStringList('waled') ?? [];
+
+      emit(SuccessGetSavedData(lastSearched));
     } catch (e) {
       emit(FailGetSavedData());
     }

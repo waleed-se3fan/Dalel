@@ -1,4 +1,5 @@
 import 'package:dalel/core/utils/assets.dart';
+import 'package:dalel/core/widgets/custom_appbar.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +10,11 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile',
-            style: TextStyle(color: Colors.brown, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            const CustomAppBar(text: 'Profile'),
             const Row(
               children: [
                 CircleAvatar(
