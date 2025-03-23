@@ -6,6 +6,7 @@ import 'package:dalel/core/widgets/custom_header.dart';
 import 'package:dalel/features/bazar/data/historical_books_model.dart';
 import 'package:dalel/features/bazar/data/historical_souviners_model.dart';
 import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
+import 'package:dalel/features/bazar/presentation/view/cart.dart';
 import 'package:dalel/features/bazar/presentation/view/historical_book_details.dart';
 import 'package:dalel/features/bazar/presentation/view/historical_souvenirs_details.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -102,7 +103,12 @@ class BazarScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFFB18573),
                 radius: 30,
                 child: IconButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    context.read<BazarBloc>().add(GetFromCartEvent());
+                    Navigator.push(context, MaterialPageRoute(builder: (c) {
+                      return CartScreen();
+                    }));
+                  },
                   color: Colors.white,
                   icon: const Icon(Icons.shopping_cart),
                 )))

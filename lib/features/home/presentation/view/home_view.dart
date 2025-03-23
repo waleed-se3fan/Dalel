@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/core/widgets/custom_header.dart';
+import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
+import 'package:dalel/features/bazar/presentation/view/bazar.dart';
 import 'package:dalel/features/home/data/historicalPeriodsModel.dart';
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dalel/features/home/presentation/view/historical_period_view.dart';
@@ -57,7 +59,25 @@ class HomeView extends StatelessWidget {
           const CustomHeaderText(
             text: 'Historical Souvenirs',
           ),
-          const HistoricalSouvenirs()
+          BlocProvider(
+            create: (context) =>
+                BazarBloc()..add(GetHistoricalSouvinersEvent()),
+            child: BlocBuilder<BazarBloc, BazarState>(
+              builder: (context, state) {
+                return SizedBox(
+                  height: 180,
+                  width: MediaQuery.of(context).size.width,
+                  child: state is SuccessGetHistoricalSouviners
+                      ? SouvinersProductCard(
+                          data: state.data,
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -204,68 +224,6 @@ class HistoricalCharacters extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class HistoricalSouvenirs extends StatelessWidget {
-  const HistoricalSouvenirs({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 133,
-      child: ListView.separated(
-        clipBehavior: Clip.none,
-        physics: const BouncingScrollPhysics(),
-        separatorBuilder: (context, index) {
-          return const SizedBox(width: 16);
-        },
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (_, index) {
-          return const CustomCategoryListViewItem();
-        },
-      ),
-    );
-  }
-}
-
-class CustomCategoryListViewItem extends StatelessWidget {
-  const CustomCategoryListViewItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 74,
-      height: 150,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 10, offset: Offset(0, 7))
-          ]),
-      child: Column(
-        children: [
-          Container(
-            width: 74,
-            height: 96,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              image: const DecorationImage(
-                image: AssetImage(
-                  Assets.imagesFrame3,
-                ),
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          const SizedBox(height: 11),
-          const Text(
-            "Lionheart",
-          )
-        ],
       ),
     );
   }

@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalel/core/utils/colors.dart';
 import 'package:dalel/core/widgets/custom_add_to_cart.dart';
 import 'package:dalel/core/widgets/custom_btn.dart';
+import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
 import 'package:dalel/features/bazar/presentation/view/historical_souvenirs_details.dart';
 import 'package:dalel/features/home/presentation/widgets/detailed_custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookDescriptionScreen extends StatelessWidget {
   final List bookDetails;
@@ -131,7 +133,26 @@ class BookDescriptionScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            CustomAddtocartButton()
+            BlocConsumer<BazarBloc, BazarState>(
+              builder: (context, state) {
+                return state is LoadingAddToCart
+                    ? const Center(child: CircularProgressIndicator())
+                    : CustomAddtocartButton(
+                        onPress: () {
+                          context.read<BazarBloc>().add(AddToCartEvent(
+                              bookDetails[index].name,
+                              '50 ',
+                              bookDetails[index].image));
+                        },
+                      );
+              },
+              listener: (BuildContext context, BazarState state) {
+                state is SuccessAddToCart
+                    ? ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(state.message)))
+                    : null;
+              },
+            ),
           ],
         ),
       ),

@@ -22,3 +22,26 @@ class SuccessGetHistoricalSouviners extends BazarState {
 class LoadingGetHistoricalSouviners extends BazarState {}
 
 class FailGetHistoricalSouviners extends BazarState {}
+
+class CheckBoxState extends BazarState {}
+
+class LoadingAddToCart extends BazarState {}
+
+class SuccessAddToCart extends BazarState {
+  final String message;
+  SuccessAddToCart(this.message);
+}
+
+class FailAddToCart extends BazarState {}
+
+class LoadingGetFromCart extends BazarState {}
+
+class SuccessGetFromCart extends BazarState {
+  final List<CartModel> data;
+  final List<int> isCheck;
+  SuccessGetFromCart(this.data, this.isCheck);
+}
+
+class FailGetFromCart extends BazarState {}
+
+class DeleteFromCart extends BazarState {}

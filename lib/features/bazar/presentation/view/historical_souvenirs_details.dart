@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalel/core/widgets/custom_add_to_cart.dart';
-import 'package:dalel/features/bazar/data/historical_souviners_model.dart';
+import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
 import 'package:dalel/features/home/presentation/widgets/detailed_custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SouvenirDescriptionScreen extends StatelessWidget {
   final List souvenirDetails;
@@ -89,7 +90,27 @@ class SouvenirDescriptionScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            CustomAddtocartButton(),
+            BlocConsumer<BazarBloc, BazarState>(
+              builder: (context, state) {
+                return state is LoadingAddToCart
+                    ? const Center(child: CircularProgressIndicator())
+                    : CustomAddtocartButton(
+                        onPress: () {
+                          context.read<BazarBloc>().add(AddToCartEvent(
+                                souvenirDetails[index].name,
+                                souvenirDetails[index].price_range,
+                                souvenirDetails[index].image,
+                              ));
+                        },
+                      );
+              },
+              listener: (BuildContext context, BazarState state) {
+                state is SuccessAddToCart
+                    ? ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(state.message)))
+                    : null;
+              },
+            ),
           ],
         ),
       ),

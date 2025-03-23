@@ -1,8 +1,10 @@
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/widgets/custom_appbar.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
+import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -63,6 +65,11 @@ class ProfileScreen extends StatelessWidget {
                 },
               ),
             ]),
+            ElevatedButton(
+                onPressed: () {
+                  ProfileBloc().getUserData();
+                },
+                child: Text('Enter'))
           ],
         ),
       ),
