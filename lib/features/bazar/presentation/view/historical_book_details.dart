@@ -144,6 +144,7 @@ class BookDescriptionScreen extends StatelessWidget {
                               '50 ',
                               bookDetails[index].image));
                         },
+                        text: 'Add To Cart',
                       );
               },
               listener: (BuildContext context, BazarState state) {

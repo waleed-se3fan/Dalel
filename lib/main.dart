@@ -1,5 +1,6 @@
 import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
+import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dalel/features/search/presentation/bloc/search_bloc.dart';
 import 'package:dalel/features/splash.dart';
 import 'package:dalel/firebase_options.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SearchBloc()..add(GetSavedData())),
         BlocProvider(
           create: (context) => BazarBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc()..add(GetProfileEvent()),
         ),
       ],
       child: const MaterialApp(

@@ -102,6 +102,7 @@ class SouvenirDescriptionScreen extends StatelessWidget {
                                 souvenirDetails[index].image,
                               ));
                         },
+                        text: 'Add To Cart',
                       );
               },
               listener: (BuildContext context, BazarState state) {

@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/widgets/custom_appbar.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:dalel/features/profile/presentation/views/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,68 +15,101 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const CustomAppBar(text: 'Profile'),
-            const Row(
+    var bloc = context.read<ProfileBloc>();
+
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage(Assets.profile),
-                ),
-                SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const CustomAppBar(text: 'Profile'),
+                Row(
                   children: [
-                    Text('Youssef Ghunim',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.brown)),
-                    Text('youssefghunim@gmail.com',
-                        style: TextStyle(color: Colors.grey)),
+                    CircleAvatar(
+                      backgroundImage: state is SuccessGetProfile
+                          ? state.image.isEmpty
+                              ? const CachedNetworkImageProvider(
+                                      'https://www.shutterstock.com/image-vector/man-avatar-profile-picture-vector-260nw-2144793321.jpg')
+                                  as ImageProvider<Object>?
+                              : FileImage(File(state.image))
+                          : FileImage(File(bloc.user!.image)),
+                      radius: 50,
+                      backgroundColor:
+                          const Color(0xFFD7CCC8), // لون رمادي فاتح
+                    ),
+                    const SizedBox(width: 12),
+                    state is SuccessGetProfile
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  '${state.model.firstName} '
+                                  '${state.model.lastName}',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.brown)),
+                              Text(state.model.email,
+                                  style: const TextStyle(color: Colors.grey)),
+                            ],
+                          )
+                        : const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('...........',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.brown)),
+                              Text('...........................',
+                                  style: TextStyle(color: Colors.grey)),
+                            ],
+                          ),
+                    const Spacer(),
+                    const Icon(Icons.edit, color: Colors.grey),
                   ],
                 ),
-                Spacer(),
-                Icon(Icons.edit, color: Colors.grey),
+                const SizedBox(height: 24),
+                const Divider(),
+                const SizedBox(height: 8),
+                Section(title: 'Account', items: [
+                  ProfileItem(
+                    icon: Icons.person,
+                    text: 'Edit Profile',
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (c) {
+                        return const EditProfileScreen();
+                      }));
+                    },
+                  ),
+                  const ProfileItem(
+                      icon: Icons.notifications, text: 'Notification'),
+                ]),
+                const SizedBox(height: 16),
+                Section(title: 'General', items: [
+                  const ProfileItem(icon: Icons.settings, text: 'Settings'),
+                  const ProfileItem(icon: Icons.lock, text: 'Security'),
+                  const ProfileItem(
+                      icon: Icons.privacy_tip, text: 'Privacy Policy'),
+                  ProfileItem(
+                    icon: Icons.logout,
+                    text: 'Log Out',
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut().then((value) =>
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (c) {
+                            return const SignInScreen();
+                          })));
+                    },
+                  ),
+                ]),
               ],
             ),
-            const SizedBox(height: 24),
-            const Divider(),
-            const SizedBox(height: 8),
-            const Section(title: 'Account', items: [
-              ProfileItem(icon: Icons.person, text: 'Edit Profile'),
-              ProfileItem(icon: Icons.notifications, text: 'Notification'),
-            ]),
-            const SizedBox(height: 16),
-            Section(title: 'General', items: [
-              const ProfileItem(icon: Icons.settings, text: 'Settings'),
-              const ProfileItem(icon: Icons.lock, text: 'Security'),
-              const ProfileItem(
-                  icon: Icons.privacy_tip, text: 'Privacy Policy'),
-              ProfileItem(
-                icon: Icons.logout,
-                text: 'Log Out',
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut().then((value) =>
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (c) {
-                        return const SignInScreen();
-                      })));
-                },
-              ),
-            ]),
-            ElevatedButton(
-                onPressed: () {
-                  ProfileBloc().getUserData();
-                },
-                child: Text('Enter'))
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

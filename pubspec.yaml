@@ -44,6 +44,9 @@ dependencies:
   cloud_firestore:
   cached_network_image:  
   dio: ^5.8.0+1
+  geolocator: ^11.1.0
+  image_picker: ^1.0.7
+  geocoding: ^3.0.0
   
 dev_dependencies:
   flutter_test:

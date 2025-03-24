@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomAddtocartButton extends StatelessWidget {
   final Function() onPress;
-  const CustomAddtocartButton({super.key, required this.onPress});
+  final String text;
+  const CustomAddtocartButton(
+      {super.key, required this.onPress, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,8 @@ class CustomAddtocartButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: const Text(
-          'Add To Cart',
+        child: Text(
+          text,
           style: TextStyle(fontSize: 18, color: AppColors.white),
         ),
       ),
