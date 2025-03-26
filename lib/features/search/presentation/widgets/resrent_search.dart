@@ -2,7 +2,7 @@ import 'package:dalel/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class ResentSearch extends StatelessWidget {
-  final List savedData;
+  final Set savedData;
   const ResentSearch({super.key, required this.savedData});
 
   @override
@@ -30,13 +30,14 @@ class ResentSearch extends StatelessWidget {
             child: GridView.builder(
               itemCount: savedData.length,
               itemBuilder: (c, i) {
+                final savedDataList = savedData.toList();
                 return Card(
                   color: Colors.white,
                   child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      savedData[i],
+                      savedDataList[i],
                       textAlign: TextAlign.center,
                     ),
                   ),

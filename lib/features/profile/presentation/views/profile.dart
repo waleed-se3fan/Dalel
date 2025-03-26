@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dalel/core/utils/assets.dart';
 import 'package:dalel/core/widgets/custom_appbar.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
@@ -27,18 +26,17 @@ class ProfileScreen extends StatelessWidget {
                 const CustomAppBar(text: 'Profile'),
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: state is SuccessGetProfile
-                          ? state.image.isEmpty
-                              ? const CachedNetworkImageProvider(
-                                      'https://www.shutterstock.com/image-vector/man-avatar-profile-picture-vector-260nw-2144793321.jpg')
-                                  as ImageProvider<Object>?
-                              : FileImage(File(state.image))
-                          : FileImage(File(bloc.user!.image)),
-                      radius: 50,
-                      backgroundColor:
-                          const Color(0xFFD7CCC8), // لون رمادي فاتح
-                    ),
+                    state is SuccessGetProfile
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(File(state.image)),
+                            radius: 50,
+                            backgroundColor:
+                                const Color(0xFFD7CCC8), // لون رمادي فاتح
+                          )
+                        : const CircleAvatar(
+                            backgroundImage: CachedNetworkImageProvider(
+                                'https://www.shutterstock.com/image-vector/man-avatar-profile-picture-vector-260nw-2144793321.jpg'),
+                          ),
                     const SizedBox(width: 12),
                     state is SuccessGetProfile
                         ? Column(
@@ -98,10 +96,10 @@ class ProfileScreen extends StatelessWidget {
                     text: 'Log Out',
                     onTap: () async {
                       await FirebaseAuth.instance.signOut().then((value) =>
-                          Navigator.pushReplacement(context,
+                          Navigator.pushAndRemoveUntil(context,
                               MaterialPageRoute(builder: (c) {
                             return const SignInScreen();
-                          })));
+                          }), (route) => false));
                     },
                   ),
                 ]),

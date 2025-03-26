@@ -25,7 +25,7 @@ class SearchScreen extends StatelessWidget {
                       model: state.data,
                     )
                   : state is SuccessGetSavedData
-                      ? ResentSearch(savedData: state.savedData)
+                      ? ResentSearch(savedData: state.savedData.toSet())
                       : const Column(
                           children: [
                             SizedBox(

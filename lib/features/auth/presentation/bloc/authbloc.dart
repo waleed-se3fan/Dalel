@@ -3,12 +3,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
+import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
-  AuthBloc() : super(AuthInitial()) {
+  final ProfileBloc profileBloc;
+  AuthBloc(this.profileBloc) : super(AuthInitial()) {
     on<AuthEvents>((event, emit) {});
 
     on<SignupEvent>((event, emit) {
@@ -43,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       TextEditingController();
 
   static bool isCheck = false;
-  static bool isobscure = false;
+  static bool isobscure = true;
   signup(String email, String password) async {
     try {
       emit(SignupLoading());
@@ -56,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           firstName: firstNameController.text,
           lastName: lastNameController.text,
           email: emailController.text);
-      emit(SignupSuccess(userCredential.user!));
+      profileBloc.add(GetProfileEvent());
     } catch (e) {
       emit(SignupFailure(e.toString()));
     }
@@ -71,6 +73,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         password: password,
       );
       emit(LoginSuccess(userCredential.user!));
+      profileBloc.add(GetProfileEvent());
     } catch (e) {
       emit(LoginFailure(e.toString()));
     }

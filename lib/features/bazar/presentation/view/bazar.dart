@@ -62,6 +62,7 @@ class BazarScreen extends StatelessWidget {
                       child: state is SuccessGetHistoricalBooks
                           ? BooksProductCard(
                               data: state.data,
+                              scrollDirection: Axis.horizontal,
                             )
                           : const Center(
                               child: CircularProgressIndicator(),
@@ -85,6 +86,7 @@ class BazarScreen extends StatelessWidget {
                       child: state is SuccessGetHistoricalSouviners
                           ? SouvinersProductCard(
                               data: state.data,
+                              scrollDirection: Axis.horizontal,
                             )
                           : const Center(
                               child: CircularProgressIndicator(),
@@ -166,33 +168,41 @@ class CategoryCard extends StatelessWidget {
 
 class BooksProductCard extends StatelessWidget {
   final List<HistoricalBoxModel> data;
+  final Axis scrollDirection;
 
-  const BooksProductCard({super.key, required this.data});
+  const BooksProductCard(
+      {super.key, required this.data, required this.scrollDirection});
 
   @override
   Widget build(BuildContext context) {
     return CustomListView(
       data: data,
+      scrollDirection: scrollDirection,
     );
   }
 }
 
 class SouvinersProductCard extends StatelessWidget {
   final List<HistoricalSouvinersModel> data;
+  final Axis scrollDirection;
 
-  const SouvinersProductCard({super.key, required this.data});
+  const SouvinersProductCard(
+      {super.key, required this.data, required this.scrollDirection});
 
   @override
   Widget build(BuildContext context) {
     return CustomListView(
       data: data,
+      scrollDirection: scrollDirection,
     );
   }
 }
 
 class CustomListView extends StatelessWidget {
   final List data;
-  const CustomListView({super.key, required this.data});
+  final Axis scrollDirection;
+  const CustomListView(
+      {super.key, required this.data, required this.scrollDirection});
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +228,7 @@ class CustomListView extends StatelessWidget {
           separatorBuilder: (context, index) {
             return const SizedBox(width: 16);
           },
-          scrollDirection: Axis.horizontal,
+          scrollDirection: scrollDirection,
           itemCount: data.length,
           itemBuilder: (_, index) {
             return InkWell(

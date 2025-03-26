@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -52,7 +53,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       user = info![0];
       print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
       print(user!.email);
-      emit(SuccessGetProfile(info![0], location ?? '', image ?? ''));
+      emit(SuccessGetProfile(info![0], location ?? '', image ?? user!.image));
     } catch (e) {
       print(e.toString());
       print('---------------------------------------------------------');
@@ -67,6 +68,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print(image);
       emit(SuccessGetProfile(info![0], location ?? '', image!));
     } catch (e) {}
+  }
+
+  saveImageToFirestorage(String path) {
+    final instance = FirebaseStorage.instance.ref();
+    instance.child('images/$path');
   }
 
   getProfileLocation() async {

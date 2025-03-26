@@ -4,6 +4,7 @@ import 'package:dalel/features/auth/presentation/bloc/authevent.dart';
 import 'package:dalel/features/auth/presentation/bloc/authstates.dart';
 import 'package:dalel/features/auth/presentation/views/signin.dart';
 import 'package:dalel/features/auth/presentation/widgets/textfield.dart';
+import 'package:dalel/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +16,7 @@ class ForgotPasswordForm extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => AuthBloc(context.read<ProfileBloc>()),
       child: BlocConsumer<AuthBloc, AuthStates>(
         listener: (context, state) {
           if (state is SuccessResetPassword) {

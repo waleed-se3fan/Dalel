@@ -9,6 +9,7 @@ import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dalel/features/home/presentation/view/historical_period_view.dart';
 import 'package:dalel/features/home/presentation/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final PageController controller = PageController();
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -49,7 +50,10 @@ class HomeView extends StatelessWidget {
             child: BlocBuilder<HomeBloc, HomeState>(
               builder: (context, state) {
                 return state is SuccessGetHistoricalPeriods
-                    ? HistoricalCharacters(model: state.data)
+                    ? HistoricalCharacters(
+                        model: state.data,
+                        scrollDirection: Axis.horizontal,
+                      )
                     : const Center(
                         child: CircularProgressIndicator(),
                       );
@@ -70,6 +74,7 @@ class HomeView extends StatelessWidget {
                   child: state is SuccessGetHistoricalSouviners
                       ? SouvinersProductCard(
                           data: state.data,
+                          scrollDirection: Axis.horizontal,
                         )
                       : const Center(
                           child: CircularProgressIndicator(),
@@ -165,8 +170,10 @@ class HistoricalPeriod extends StatelessWidget {
 
 class HistoricalCharacters extends StatelessWidget {
   final List<HistoricalPeriodsModel> model;
+  final Axis scrollDirection;
 
-  const HistoricalCharacters({super.key, required this.model});
+  const HistoricalCharacters(
+      {super.key, required this.model, required this.scrollDirection});
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +185,7 @@ class HistoricalCharacters extends StatelessWidget {
         separatorBuilder: (context, index) {
           return const SizedBox(width: 16);
         },
-        scrollDirection: Axis.horizontal,
+        scrollDirection: scrollDirection,
         itemCount: model.length,
         itemBuilder: (_, index) {
           return InkWell(

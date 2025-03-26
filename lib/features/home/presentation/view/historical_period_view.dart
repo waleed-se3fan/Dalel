@@ -7,7 +7,6 @@ import 'package:dalel/features/home/data/warsModel.dart';
 import 'package:dalel/features/home/presentation/bloc/home_bloc.dart';
 import 'package:dalel/features/home/presentation/view/home_view.dart';
 import 'package:dalel/features/home/presentation/widgets/detailed_custom_appbar.dart';
-import 'package:dalel/features/home/presentation/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,7 +53,10 @@ class HistoricalPeriodScreen extends StatelessWidget {
               child: BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
                   return state is SuccessGetHistoricalPeriods
-                      ? HistoricalCharacters(model: state.data)
+                      ? HistoricalCharacters(
+                          model: state.data,
+                          scrollDirection: Axis.horizontal,
+                        )
                       : const Center(
                           child: CircularProgressIndicator(),
                         );
