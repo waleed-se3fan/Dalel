@@ -66,7 +66,14 @@ class ProfileScreen extends StatelessWidget {
                             ],
                           ),
                     const Spacer(),
-                    const Icon(Icons.edit, color: Colors.grey),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (c) {
+                            return const EditProfileScreen();
+                          }));
+                        },
+                        icon: const Icon(Icons.edit, color: Colors.grey)),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -87,7 +94,6 @@ class ProfileScreen extends StatelessWidget {
                 ]),
                 const SizedBox(height: 16),
                 Section(title: 'General', items: [
-                  const ProfileItem(icon: Icons.settings, text: 'Settings'),
                   const ProfileItem(icon: Icons.lock, text: 'Security'),
                   const ProfileItem(
                       icon: Icons.privacy_tip, text: 'Privacy Policy'),

@@ -29,6 +29,7 @@ class LoadingAddToCart extends BazarState {}
 
 class SuccessAddToCart extends BazarState {
   final String message;
+
   SuccessAddToCart(this.message);
 }
 
@@ -39,7 +40,8 @@ class LoadingGetFromCart extends BazarState {}
 class SuccessGetFromCart extends BazarState {
   final List<CartModel> data;
   final List<int> isCheck;
-  SuccessGetFromCart(this.data, this.isCheck);
+  final double totalPrice;
+  SuccessGetFromCart(this.data, this.isCheck, this.totalPrice);
 }
 
 class FailGetFromCart extends BazarState {}

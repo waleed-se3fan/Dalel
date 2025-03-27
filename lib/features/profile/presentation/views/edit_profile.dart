@@ -33,8 +33,6 @@ class EditProfileScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // 👤 صورة البروفايل
-
                   GestureDetector(
                     onTap: () {
                       context.read<ProfileBloc>().add(GetImageEvent());
@@ -48,13 +46,10 @@ class EditProfileScreen extends StatelessWidget {
                               : FileImage(File(state.image))
                           : FileImage(File(bloc.user!.image)),
                       radius: 50,
-                      backgroundColor:
-                          const Color(0xFFD7CCC8), // لون رمادي فاتح
+                      backgroundColor: const Color(0xFFD7CCC8),
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // 📝 First Name & Last Name في صف واحد
                   Row(
                     children: [
                       Expanded(
@@ -72,21 +67,17 @@ class EditProfileScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-
                   CustomTextField(
                       controller: bloc.phoneController,
                       label: bloc.user!.phoneNumber.isEmpty
-                          ? "Enter Your Phone number"
+                          ? "Change Your Phone number"
                           : bloc.user!.phoneNumber),
-
                   const SizedBox(height: 16),
-
                   CustomTextField(
                     label: 'Change your password',
                     controller: bloc.passwordController,
                   ),
                   const SizedBox(height: 16),
-
                   Row(
                     children: [
                       Expanded(
@@ -108,7 +99,6 @@ class EditProfileScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 24),
-
                   CustomAddtocartButton(
                     text: 'Save',
                     onPress: () {

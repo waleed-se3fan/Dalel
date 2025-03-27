@@ -166,11 +166,6 @@ class DrawerView extends StatelessWidget {
       ),
       const Divider(),
       buildDrawerItem(
-        icon: Icons.settings,
-        text: 'Settings',
-        onTap: () {},
-      ),
-      buildDrawerItem(
         icon: Icons.info,
         text: 'About',
         onTap: () {

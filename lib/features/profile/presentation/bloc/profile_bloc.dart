@@ -52,8 +52,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       info = data.docs.map((e) => UserModel.fromFirestore(e.data())).toList();
       user = info![0];
       print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-      print(user!.email);
-      emit(SuccessGetProfile(info![0], location ?? '', image ?? user!.image));
+
+      location = info![0].location;
+
+      emit(SuccessGetProfile(
+          info![0], info![0].location ?? '', image ?? user!.image));
     } catch (e) {
       print(e.toString());
       print('---------------------------------------------------------');
@@ -68,11 +71,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print(image);
       emit(SuccessGetProfile(info![0], location ?? '', image!));
     } catch (e) {}
-  }
-
-  saveImageToFirestorage(String path) {
-    final instance = FirebaseStorage.instance.ref();
-    instance.child('images/$path');
   }
 
   getProfileLocation() async {
@@ -104,19 +102,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String docId = snapshot.docs.first.id;
         print('Document ID: $docId');
         try {
-          print('..........................................');
-          print(fname);
-          print(lname);
           await FirebaseFirestore.instance
               .collection('user')
               .doc(docId)
               .update({
             'firstName': fname.isEmpty ? user!.firstName : fname,
-            'lastName': fname.isEmpty ? user!.firstName : fname,
-            'image': image!.isEmpty ? user!.image : image,
+            'lastName': lname.isEmpty ? user!.lastName : lname,
+            // 'image': image!.isEmpty ? user!.image : image,
             'password': password,
             'phoneNumber': phone.isEmpty ? user!.phoneNumber : phone,
-            'location': location!.isEmpty ? user!.location : location
+            'location': location!.isEmpty ? user!.location : location ?? ''
           });
 
           print('+++++++++++++++++++++++++++++');

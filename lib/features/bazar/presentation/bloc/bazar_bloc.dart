@@ -64,7 +64,7 @@ class BazarBloc extends Bloc<BazarEvent, BazarState> {
   }
 
   int index = 0;
-
+  double totalPrice = 0.0;
   List<int> checkList = [];
   checkBox(index, value) {
     if (state is SuccessGetFromCart) {
@@ -74,7 +74,7 @@ class BazarBloc extends Bloc<BazarEvent, BazarState> {
       } else {
         checkList.remove(index);
       }
-      emit(SuccessGetFromCart(currentState.data, checkList));
+      emit(SuccessGetFromCart(currentState.data, checkList, totalPrice));
     } else {}
   }
 
@@ -84,6 +84,7 @@ class BazarBloc extends Bloc<BazarEvent, BazarState> {
       await FirebaseFirestore.instance
           .collection('cart')
           .add({'name': name, 'price': '$price \$', 'image': image});
+      totalPrice += 25;
 
       emit(SuccessAddToCart('  successfully added'));
     } catch (e) {
@@ -100,8 +101,8 @@ class BazarBloc extends Bloc<BazarEvent, BazarState> {
           await FirebaseFirestore.instance.collection('cart').get();
       carts = docs.docs.map((e) => CartModel.fromFire(e.data(), e.id)).toList();
       print(carts[0].name);
-
-      emit(SuccessGetFromCart(carts, []));
+      print(totalPrice);
+      emit(SuccessGetFromCart(carts, [], totalPrice));
     } catch (e) {
       emit(FailGetFromCart());
     }
@@ -117,7 +118,8 @@ class BazarBloc extends Bloc<BazarEvent, BazarState> {
       carts.removeAt(index);
     }
     checkList.clear();
+    totalPrice -= 25;
 
-    emit(SuccessGetFromCart(carts, checkList));
+    emit(SuccessGetFromCart(carts, checkList, totalPrice));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dalel/core/widgets/custom_add_to_cart.dart';
 import 'package:dalel/features/bazar/presentation/bloc/bazar_bloc.dart';
 import 'package:dalel/features/bazar/presentation/view/checkout.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,6 @@ class CartScreen extends StatelessWidget {
                                               image: CachedNetworkImageProvider(
                                                   state.data[index].image),
                                               fit: BoxFit.fill),
-                                          // color: Colors.brown.shade100,
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
@@ -152,11 +152,11 @@ class CartScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Total Payment',
                                     style: TextStyle(
                                       fontSize: 18,
@@ -164,43 +164,31 @@ class CartScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text(
-                                    '\$',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  BlocBuilder<BazarBloc, BazarState>(
+                                    builder: (context, state) {
+                                      return Text(
+                                        state is SuccessGetFromCart
+                                            ? '\$${state.totalPrice}'
+                                            : '\$${BazarBloc().totalPrice.toString()}',
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 12),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (c) {
-                                    return const CheckoutScreen();
-                                  }));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.brown,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 16),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                ),
-                                child: const Center(
-                                  child: Text(
-                                    'Checkout Now',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              CustomAddtocartButton(
+                                  onPress: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (c) {
+                                      return const CheckoutScreen();
+                                    }));
+                                  },
+                                  text: 'Checkout Now')
                             ],
                           ),
                         ),
